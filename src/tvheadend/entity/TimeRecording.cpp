@@ -7,7 +7,27 @@
 
 #include "TimeRecording.h"
 
+#include <ctime>
+
 using namespace tvheadend::entity;
+
+namespace
+{
+time_t LocaltimeToUTC(int32_t lctime)
+{
+  /* Note: lctime contains minutes from midnight (up to 24*60) as local time. */
+
+  /* complete lctime with current year, month, day, ... */
+  time_t t = std::time(nullptr);
+  struct tm* tm_time = std::localtime(&t);
+
+  tm_time->tm_hour = lctime / 60;
+  tm_time->tm_min = lctime % 60;
+  tm_time->tm_sec = 0;
+
+  return std::mktime(tm_time);
+}
+} // unnamed namespace
 
 TimeRecording::TimeRecording(const std::string& id /*= ""*/) : SeriesRecordingBase(id)
 {

@@ -38,6 +38,8 @@ class RecordingBase;
 constexpr unsigned int CUSTOM_PROP_ID_AUTOREC_BROADCASTTYPE{1};
 constexpr unsigned int CUSTOM_PROP_ID_DVR_CONFIGURATION{2};
 constexpr unsigned int CUSTOM_PROP_ID_DVR_COMMENT{3};
+constexpr unsigned int CUSTOM_PROP_ID_AUTOREC_START{4};
+constexpr unsigned int CUSTOM_PROP_ID_AUTOREC_STARTWINDOW{5};
 
 class CustomTimerProperties
 {

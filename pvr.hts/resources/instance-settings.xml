@@ -166,30 +166,6 @@
 
     <category id="timer" label="30010" help="-1">
       <group id="1" label="30050">
-        <setting id="autorec_approxtime" type="integer" label="30051" help="-1">
-          <level>0</level>
-          <default>0</default> <!-- Strict (start time + end time) -->
-          <constraints>
-            <options>
-              <option label="30052">0</option> <!-- Strict (start time + end time) -->
-              <option label="30053">1</option> <!-- Relaxed (start time +/- margin) -->
-            </options>
-          </constraints>
-          <control type="list" format="string" />
-        </setting>
-        <setting id="autorec_maxdiff" type="integer" label="30054" help="-1">
-          <level>0</level>
-          <default>15</default>
-          <constraints>
-            <minimum>0</minimum>
-            <step>5</step>
-            <maximum>120</maximum>
-          </constraints>
-          <dependencies>
-            <dependency type="enable" setting="autorec_approxtime">1</dependency>
-          </dependencies>
-          <control type="slider" format="integer" />
-        </setting>
         <setting id="autorec_use_regex" type="boolean" label="30061" help="-1">
           <level>0</level>
           <default>false</default>
