@@ -42,8 +42,6 @@ public:
   bool GetAsyncEpg() const { return m_bAsyncEpg; }
   int GetTotalTuners() const { return m_iTotalTuners; }
   int GetPreTunerCloseDelay() const { return m_iPreTunerCloseDelay; }
-  int GetAutorecApproxTime() const { return m_iAutorecApproxTime; }
-  int GetAutorecMaxDiff() const { return m_iAutorecMaxDiff; }
   bool GetAutorecUseRegEx() const { return m_bAutorecUseRegEx; }
   std::string GetStreamingProfile() const { return m_strStreamingProfile; }
   bool GetStreamingHTTP() const { return m_bUseHTTPStreaming; }
@@ -79,8 +77,6 @@ private:
   void SetAsyncEpg(bool value) { m_bAsyncEpg = value; }
   void SetTotalTuners(int value) { m_iTotalTuners = value; }
   void SetPreTunerCloseDelay(int value) { m_iPreTunerCloseDelay = value; }
-  void SetAutorecApproxTime(int value) { m_iAutorecApproxTime = value; }
-  void SetAutorecMaxDiff(int value) { m_iAutorecMaxDiff = value; }
   void SetAutorecUseRegEx(bool value) { m_bAutorecUseRegEx = value; }
   void SetStreamingProfile(const std::string& value) { m_strStreamingProfile = value; }
   void SetStreamingHTTP(bool value) { m_bUseHTTPStreaming = value; }
@@ -120,8 +116,6 @@ private:
   bool m_bPretunerEnabled;
   int m_iTotalTuners;
   int m_iPreTunerCloseDelay;
-  bool m_iAutorecApproxTime;
-  int m_iAutorecMaxDiff;
   bool m_bAutorecUseRegEx;
   std::string m_strStreamingProfile;
   bool m_bUseHTTPStreaming;

@@ -30,11 +30,7 @@ const bool DEFAULT_ASYNC_EPG = true;
 const bool DEFAULT_PRETUNER_ENABLED = false;
 const int DEFAULT_TOTAL_TUNERS = 1; // total tuners > 1 => predictive tuning active
 const int DEFAULT_PRETUNER_CLOSEDELAY = 10; // secs
-const int DEFAULT_AUTOREC_MAXDIFF =
-    15; // mins. Maximum difference between real and approximate start time for auto recordings
 const bool DEFAULT_AUTOREC_USE_REGEX = false;
-const int DEFAULT_APPROX_TIME =
-    0; // don't use an approximate start time, use a fixed time instead for auto recordings
 const std::string DEFAULT_STREAMING_PROFILE = "";
 const bool DEFAULT_STREAMING_HTTP = false;
 const int DEFAULT_DVR_PRIO = DVR_PRIO_NORMAL;
@@ -62,8 +58,6 @@ InstanceSettings::InstanceSettings(kodi::addon::IAddonInstance& instance)
     m_bPretunerEnabled(DEFAULT_PRETUNER_ENABLED),
     m_iTotalTuners(DEFAULT_TOTAL_TUNERS),
     m_iPreTunerCloseDelay(DEFAULT_PRETUNER_CLOSEDELAY),
-    m_iAutorecApproxTime(DEFAULT_APPROX_TIME),
-    m_iAutorecMaxDiff(DEFAULT_AUTOREC_MAXDIFF),
     m_bAutorecUseRegEx(DEFAULT_AUTOREC_USE_REGEX),
     m_strStreamingProfile(DEFAULT_STREAMING_PROFILE),
     m_bUseHTTPStreaming(DEFAULT_STREAMING_HTTP),
@@ -103,8 +97,6 @@ void InstanceSettings::ReadSettings()
       m_bPretunerEnabled ? ReadIntSetting("pretuner_closedelay", DEFAULT_PRETUNER_CLOSEDELAY) : 0);
 
   /* Auto recordings */
-  SetAutorecApproxTime(ReadIntSetting("autorec_approxtime", DEFAULT_APPROX_TIME));
-  SetAutorecMaxDiff(ReadIntSetting("autorec_maxdiff", DEFAULT_AUTOREC_MAXDIFF));
   SetAutorecUseRegEx(ReadBoolSetting("autorec_use_regex", DEFAULT_AUTOREC_USE_REGEX));
 
   /* Streaming */
@@ -176,13 +168,6 @@ ADDON_STATUS InstanceSettings::SetSetting(const std::string& key,
     return ADDON_STATUS_OK;
   }
   /* Auto recordings */
-  else if (key == "autorec_approxtime")
-    return SetIntSetting(GetAutorecApproxTime(), value);
-  else if (key == "autorec_maxdiff")
-  {
-    SetAutorecMaxDiff(value.GetInt());
-    return ADDON_STATUS_OK;
-  }
   else if (key == "autorec_use_regex")
   {
     SetAutorecUseRegEx(value.GetBoolean());

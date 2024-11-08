@@ -28,7 +28,8 @@ AutoRecordings::AutoRecordings(const std::shared_ptr<InstanceSettings>& settings
                                Profiles& dvrConfigs)
   : m_settings(settings),
     m_conn(conn),
-    m_customTimerProps({CUSTOM_PROP_ID_DVR_CONFIGURATION, CUSTOM_PROP_ID_AUTOREC_BROADCASTTYPE,
+    m_customTimerProps({CUSTOM_PROP_ID_AUTOREC_START, CUSTOM_PROP_ID_AUTOREC_STARTWINDOW,
+                        CUSTOM_PROP_ID_AUTOREC_BROADCASTTYPE, CUSTOM_PROP_ID_DVR_CONFIGURATION,
                         CUSTOM_PROP_ID_DVR_COMMENT},
                        conn,
                        dvrConfigs)
@@ -69,23 +70,6 @@ void AutoRecordings::GetAutorecTimers(std::vector<kodi::addon::PVRTimer>& timers
     tmr.SetClientIndex(rec.second.GetId());
     tmr.SetClientChannelUid((rec.second.GetChannel() > 0) ? rec.second.GetChannel()
                                                           : PVR_TIMER_ANY_CHANNEL);
-    tmr.SetStartTime(rec.second.GetStart());
-    tmr.SetEndTime(rec.second.GetStop());
-    if (tmr.GetStartTime() == 0)
-      tmr.SetStartAnyTime(true);
-    if (tmr.GetEndTime() == 0)
-      tmr.SetEndAnyTime(true);
-
-    if (!tmr.GetStartAnyTime() && tmr.GetEndAnyTime())
-      tmr.SetEndTime(tmr.GetStartTime() + 60 * 60); // Nominal 1 hour duration
-    if (tmr.GetStartAnyTime() && !tmr.GetEndAnyTime())
-      tmr.SetStartTime(tmr.GetEndTime() - 60 * 60); // Nominal 1 hour duration
-    if (tmr.GetStartAnyTime() && tmr.GetEndAnyTime())
-    {
-      tmr.SetStartTime(std::time(nullptr)); // now
-      tmr.SetEndTime(tmr.GetStartTime() + 60 * 60); // Nominal 1 hour duration
-    }
-
     if (rec.second.GetName().empty()) // timers created on backend may not contain a name
       tmr.SetTitle(rec.second.GetTitle());
     else
@@ -211,66 +195,6 @@ PVR_ERROR AutoRecordings::SendAutorecAddOrUpdate(const kodi::addon::PVRTimer& ti
   if (timer.GetDirectory() != "/")
     htsmsg_add_str(m, "directory", timer.GetDirectory().c_str());
 
-
-  /* bAutorecApproxTime enabled:  => start time in kodi = approximate start time in tvh     */
-  /*                              => 'approximate'      = starting window / 2               */
-  /*                                                                                        */
-  /* bAutorecApproxTime disabled: => start time in kodi = begin of starting window in tvh   */
-  /*                              => end time in kodi   = end of starting window in tvh     */
-  if (m_settings->GetAutorecApproxTime())
-  {
-    /* Not sending causes server to set start and startWindow to any time */
-    if (timer.GetStartTime() > 0 && !timer.GetStartAnyTime())
-    {
-      time_t startTime = timer.GetStartTime();
-      struct tm* tm_start = std::localtime(&startTime);
-      int32_t startWindowBegin =
-          tm_start->tm_hour * 60 + tm_start->tm_min - m_settings->GetAutorecMaxDiff();
-      int32_t startWindowEnd =
-          tm_start->tm_hour * 60 + tm_start->tm_min + m_settings->GetAutorecMaxDiff();
-
-      /* Past midnight correction */
-      if (startWindowBegin < 0)
-        startWindowBegin += (24 * 60);
-      if (startWindowEnd > (24 * 60))
-        startWindowEnd -= (24 * 60);
-
-      htsmsg_add_s32(m, "start", startWindowBegin);
-      htsmsg_add_s32(m, "startWindow", startWindowEnd);
-    }
-    else
-    {
-      htsmsg_add_s32(m, "start", -1);
-      htsmsg_add_s32(m, "startWindow", -1);
-    }
-  }
-  else
-  {
-    if (timer.GetStartTime() > 0 && !timer.GetStartAnyTime())
-    {
-      /* Exact start time (minutes from midnight). */
-      time_t startTime = timer.GetStartTime();
-      struct tm* tm_start = std::localtime(&startTime);
-      htsmsg_add_s32(m, "start", tm_start->tm_hour * 60 + tm_start->tm_min);
-    }
-    else
-      htsmsg_add_s32(
-          m, "start",
-          25 * 60); // -1 or not sending causes server to set start and startWindow to any time
-
-    if (timer.GetEndTime() > 0 && !timer.GetEndAnyTime())
-    {
-      /* Exact stop time (minutes from midnight). */
-      time_t endTime = timer.GetEndTime();
-      struct tm* tm_stop = std::localtime(&endTime);
-      htsmsg_add_s32(m, "startWindow", tm_stop->tm_hour * 60 + tm_stop->tm_min);
-    }
-    else
-      htsmsg_add_s32(
-          m, "startWindow",
-          25 * 60); // -1 or not sending causes server to set start and startWindow to any time
-  }
-
   /* series link */
   if (timer.GetTimerType() == TIMER_REPEATING_SERIESLINK)
     htsmsg_add_str(m, "serieslinkUri", timer.GetSeriesLink().c_str());
@@ -341,7 +265,6 @@ bool AutoRecordings::ParseAutorecAddOrUpdate(htsmsg_t* msg, bool bAdd)
 
   /* Locate/create entry */
   AutoRecording& rec = m_autoRecordings[std::string(str)];
-  rec.SetSettings(m_settings);
   rec.SetStringId(std::string(str));
   rec.SetDirty(false);
 

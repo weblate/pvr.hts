@@ -47,6 +47,18 @@ std::vector<kodi::addon::PVRSettingKeyValuePair> CustomTimerProperties::GetPrope
   {
     switch (propId)
     {
+      case CUSTOM_PROP_ID_AUTOREC_START:
+      {
+        // Start
+        customProps.emplace_back(CUSTOM_PROP_ID_AUTOREC_START, autorec.GetStartWindowBegin());
+        break;
+      }
+      case CUSTOM_PROP_ID_AUTOREC_STARTWINDOW:
+      {
+        // Start window
+        customProps.emplace_back(CUSTOM_PROP_ID_AUTOREC_STARTWINDOW, autorec.GetStartWindowEnd());
+        break;
+      }
       case CUSTOM_PROP_ID_AUTOREC_BROADCASTTYPE:
       {
         // Broadcast type
@@ -105,6 +117,28 @@ const std::vector<kodi::addon::PVRSettingDefinition> CustomTimerProperties::GetS
   {
     switch (propId)
     {
+      case CUSTOM_PROP_ID_AUTOREC_START:
+      {
+        int defaultValue{AUTOREC_START_ANYTIME};
+        const std::vector<kodi::addon::PVRTypeIntValue> startValues{
+            GetPossibleValues(CUSTOM_PROP_ID_AUTOREC_START, defaultValue)};
+        ret.emplace_back(CreateSettingDefinition(CUSTOM_PROP_ID_AUTOREC_START,
+                                                 30606, // Start after
+                                                 startValues, defaultValue,
+                                                 PVR_SETTING_READONLY_CONDITION_NONE));
+        break;
+      }
+      case CUSTOM_PROP_ID_AUTOREC_STARTWINDOW:
+      {
+        int defaultValue{AUTOREC_START_ANYTIME};
+        const std::vector<kodi::addon::PVRTypeIntValue> startWindowValues{
+            GetPossibleValues(CUSTOM_PROP_ID_AUTOREC_STARTWINDOW, defaultValue)};
+        ret.emplace_back(CreateSettingDefinition(CUSTOM_PROP_ID_AUTOREC_STARTWINDOW,
+                                                 30607, // Start before
+                                                 startWindowValues, defaultValue,
+                                                 PVR_SETTING_READONLY_CONDITION_NONE));
+        break;
+      }
       case CUSTOM_PROP_ID_AUTOREC_BROADCASTTYPE:
       {
         // Broadcast type
@@ -166,6 +200,33 @@ const std::vector<kodi::addon::PVRTypeIntValue> CustomTimerProperties::GetPossib
 {
   switch (propId)
   {
+    case CUSTOM_PROP_ID_AUTOREC_START:
+    case CUSTOM_PROP_ID_AUTOREC_STARTWINDOW:
+    {
+      // Start, Start window
+
+      // Any   : AUTOREC_START_ANYTIME (-1)
+      // 0:00  : 0
+      // 0:10  : 0 * 60 + 10
+      // ...
+      // 23:50 : 23 * 60 + 50
+      static std::vector<kodi::addon::PVRTypeIntValue> startValues{};
+      if (startValues.empty())
+      {
+        startValues.reserve(24 * 60 / 10 + 1);
+        startValues.emplace_back(
+            kodi::addon::PVRTypeIntValue(AUTOREC_START_ANYTIME,
+                                         kodi::addon::GetLocalizedString(30601))); // Any
+        for (int i = 0; i < 24 * 60; i += 10)
+        {
+          const std::string hours{std::to_string(i / 60)};
+          const std::string minutes{(i % 60) == 0 ? "00" : std::to_string(i % 60)};
+          startValues.emplace_back(kodi::addon::PVRTypeIntValue(i, hours + ":" + minutes));
+        }
+      }
+      defaultValue = AUTOREC_START_ANYTIME; // Any
+      return startValues;
+    }
     case CUSTOM_PROP_ID_AUTOREC_BROADCASTTYPE:
     {
       // Broadcast type
@@ -241,6 +302,18 @@ void CustomTimerProperties::AppendPropertiesToHTSPMessage(
   {
     switch (prop.GetKey())
     {
+      case CUSTOM_PROP_ID_AUTOREC_START:
+      {
+        // Start
+        htsmsg_add_s32(msg, "start", prop.GetIntValue());
+        break;
+      }
+      case CUSTOM_PROP_ID_AUTOREC_STARTWINDOW:
+      {
+        // Start window
+        htsmsg_add_s32(msg, "startWindow", prop.GetIntValue());
+        break;
+      }
       case CUSTOM_PROP_ID_AUTOREC_BROADCASTTYPE:
       {
         // Broadcast type

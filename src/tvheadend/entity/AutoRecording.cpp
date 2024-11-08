@@ -7,8 +7,6 @@
 
 #include "AutoRecording.h"
 
-#include "../InstanceSettings.h"
-
 using namespace tvheadend;
 using namespace tvheadend::entity;
 
@@ -30,37 +28,9 @@ bool AutoRecording::operator!=(const AutoRecording& right)
   return !(*this == right);
 }
 
-time_t AutoRecording::GetStart() const
+int AutoRecording::GetStartWindowBegin() const
 {
-  if (m_settings->GetAutorecApproxTime())
-  {
-    /* Calculate the approximate start time from the starting window */
-    if ((m_startWindowBegin == -1) ||
-        (m_startWindowEnd == -1)) // no starting window set => "any time"
-    {
-      return 0;
-    }
-    else if (m_startWindowEnd < m_startWindowBegin)
-    {
-      /* End of start window is a day in the future */
-      int32_t newEnd = m_startWindowEnd + (24 * 60);
-      int32_t newStart = m_startWindowBegin + (newEnd - m_startWindowBegin) / 2;
-
-      if (newStart > (24 * 60))
-        newStart -= (24 * 60);
-
-      return LocaltimeToUTC(newStart);
-    }
-    else
-      return LocaltimeToUTC(m_startWindowBegin + (m_startWindowEnd - m_startWindowBegin) / 2);
-  }
-  else
-  {
-    if (m_startWindowBegin == -1) // "any time"
-      return 0;
-
-    return LocaltimeToUTC(m_startWindowBegin);
-  }
+  return m_startWindowBegin;
 }
 
 void AutoRecording::SetStartWindowBegin(int32_t start)
@@ -68,20 +38,9 @@ void AutoRecording::SetStartWindowBegin(int32_t start)
   m_startWindowBegin = start;
 }
 
-time_t AutoRecording::GetStop() const
+int AutoRecording::GetStartWindowEnd() const
 {
-  if (m_settings->GetAutorecApproxTime())
-  {
-    /* Tvh doesn't have an approximate stop time => "any time" */
-    return 0;
-  }
-  else
-  {
-    if (m_startWindowEnd == -1) // "any time"
-      return 0;
-
-    return LocaltimeToUTC(m_startWindowEnd);
-  }
+  return m_startWindowEnd;
 }
 
 void AutoRecording::SetStartWindowEnd(int32_t end)

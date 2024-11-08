@@ -10,7 +10,6 @@
 #include "RecordingBase.h"
 
 #include <cstdint>
-#include <ctime>
 #include <string>
 
 namespace tvheadend::entity
@@ -47,9 +46,6 @@ public:
   void SetOwner(const std::string& owner) { m_owner = owner; }
 
   void SetCreator(const std::string& creator) { m_creator = creator; }
-
-protected:
-  static time_t LocaltimeToUTC(int32_t lctime);
 
 private:
   static unsigned int GetNextIntId();

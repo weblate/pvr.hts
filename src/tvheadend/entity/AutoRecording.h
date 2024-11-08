@@ -11,16 +11,15 @@
 
 #include <cstdint>
 #include <map>
-#include <memory>
 #include <string>
 #include <utility>
 
 namespace tvheadend
 {
-class InstanceSettings;
-
 namespace entity
 {
+
+static constexpr int AUTOREC_START_ANYTIME{-1};
 
 class AutoRecording : public SeriesRecordingBase
 {
@@ -30,12 +29,10 @@ public:
   bool operator==(const AutoRecording& right);
   bool operator!=(const AutoRecording& right);
 
-  void SetSettings(const std::shared_ptr<InstanceSettings>& settings) { m_settings = settings; }
-
-  time_t GetStart() const;
+  int GetStartWindowBegin() const;
   void SetStartWindowBegin(int32_t begin);
 
-  time_t GetStop() const;
+  int GetStartWindowEnd() const;
   void SetStartWindowEnd(int32_t end);
 
   int64_t GetMarginStart() const;
@@ -57,10 +54,10 @@ public:
   void SetSeriesLink(const std::string& seriesLink);
 
 private:
-  std::shared_ptr<InstanceSettings> m_settings;
-
-  int32_t m_startWindowBegin{0}; // Begin of the starting window (minutes from midnight).
-  int32_t m_startWindowEnd{0}; // End of the starting window (minutes from midnight).
+  int32_t m_startWindowBegin{
+      AUTOREC_START_ANYTIME}; // Minutes from midnight (up to 24*60) for the start of the time window (including).
+  int32_t m_startWindowEnd{
+      AUTOREC_START_ANYTIME}; // Minutes from midnight (up to 24*60) for the end of the time window (including, cross-noon allowed)
   int64_t m_startExtra{0}; // Extra start minutes (pre-time).
   int64_t m_stopExtra{0}; // Extra stop minutes (post-time).
   uint32_t m_dupDetect{0}; // duplicate episode detect (numeric values: see dvr_autorec_dedup_t).

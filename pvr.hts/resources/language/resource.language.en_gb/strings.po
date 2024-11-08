@@ -88,22 +88,6 @@ msgctxt "#30050"
 msgid "Auto recordings"
 msgstr ""
 
-msgctxt "#30051"
-msgid "Start time window calculation"
-msgstr ""
-
-msgctxt "#30052"
-msgid "Strict (start time + end time)"
-msgstr ""
-
-msgctxt "#30053"
-msgid "Relaxed (start time +/- margin)"
-msgstr ""
-
-msgctxt "#30054"
-msgid "Maximum start time margin (minutes)"
-msgstr ""
-
 msgctxt "#30055"
 msgid "Default priority"
 msgstr ""
@@ -515,4 +499,12 @@ msgstr ""
 
 msgctxt "#30605"
 msgid "(Default profile)"
+msgstr ""
+
+msgctxt "#30606"
+msgid "Start after"
+msgstr ""
+
+msgctxt "#30607"
+msgid "Start before"
 msgstr ""
