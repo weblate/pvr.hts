@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: KODI Main\n"
 "Report-Msgid-Bugs-To: translations@kodi.tv\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2025-01-17 22:39+0000\n"
-"Last-Translator: Christian Gade <gade@kodi.tv>\n"
+"PO-Revision-Date: 2025-01-26 08:32+0000\n"
+"Last-Translator: Havok Dan <havokdan@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazil) <https://kodi.weblate.cloud/projects/kodi-add-ons-pvr-clients/pvr-hts/pt_br/>\n"
 "Language: pt_br\n"
 "MIME-Version: 1.0\n"
@@ -71,15 +71,15 @@ msgstr "Ajustes de Gravação"
 
 msgctxt "#30011"
 msgid "Use HTTPS"
-msgstr ""
+msgstr "Usar HTTPS"
 
 msgctxt "#30012"
 msgid "Server MAC for Wake-on-LAN"
-msgstr ""
+msgstr "Servidor MAC para Wake-on-LAN"
 
 msgctxt "#30013"
 msgid "Threshold for reconnect on stalled streams (seconds)"
-msgstr ""
+msgstr "Limite para reconexão em streams paralisados (segundos)"
 
 msgctxt "#30050"
 msgid "Auto recordings"
@@ -127,7 +127,7 @@ msgstr "Ignorar duplicatas (tvh 4.3+)"
 
 msgctxt "#30061"
 msgid "Use regular expressions (regex) for programme matching"
-msgstr ""
+msgstr "Usar expressões regulares (regex) para correspondência de programas"
 
 msgctxt "#30100"
 msgid "Data transfer"
@@ -337,12 +337,12 @@ msgstr "Até existir espaço necessário"
 #. Recording lifetime representation
 msgctxt "#30389"
 msgid "Forever"
-msgstr ""
+msgstr "Sempre"
 
 #. Recording lifetime representation
 msgctxt "#30390"
 msgid "Use backend setting"
-msgstr ""
+msgstr "Usar configuração do backend"
 
 msgctxt "#30400"
 msgid "Predictive tuning"
@@ -411,7 +411,7 @@ msgstr "Fluxo de leitura do tamanho do bloco para gravações (KB)"
 
 msgctxt "#30505"
 msgid "Use HTTP streaming for channels"
-msgstr ""
+msgstr "Usar streaming HTTP para canais"
 
 msgctxt "#30510"
 msgid "Recordings"
