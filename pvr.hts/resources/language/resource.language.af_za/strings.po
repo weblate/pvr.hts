@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: KODI Main\n"
 "Report-Msgid-Bugs-To: translations@kodi.tv\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2025-01-17 22:38+0000\n"
-"Last-Translator: Christian Gade <gade@kodi.tv>\n"
+"PO-Revision-Date: 2025-01-21 04:47+0000\n"
+"Last-Translator: Heiko Berner <berner.h@gmail.com>\n"
 "Language-Team: Afrikaans (South Africa) <https://kodi.weblate.cloud/projects/kodi-add-ons-pvr-clients/pvr-hts/af_za/>\n"
 "Language: af_za\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "Tvheadend voorprogram; ondersteun stroom van Lewendige TV & Opnames, EPG
 
 msgctxt "#30000"
 msgid "Connection settings"
-msgstr "Verbinding verstellings"
+msgstr "Verbinding instellings"
 
 msgctxt "#30001"
 msgid "Tvheadend hostname or IP address"
@@ -59,15 +59,15 @@ msgstr "Reageer tydverstreke (sekondes)"
 
 msgctxt "#30008"
 msgid "Advanced settings"
-msgstr "Gevorderde verstellings"
+msgstr "Gevorderde instellings"
 
 msgctxt "#30009"
 msgid "Streaming settings"
-msgstr "Stroom verstellings"
+msgstr "Stroom instellings"
 
 msgctxt "#30010"
 msgid "Timer settings"
-msgstr "Tydhouer verstellings"
+msgstr "Tydhouer instellings"
 
 msgctxt "#30011"
 msgid "Use HTTPS"
@@ -342,7 +342,7 @@ msgstr ""
 #. Recording lifetime representation
 msgctxt "#30390"
 msgid "Use backend setting"
-msgstr ""
+msgstr "Gebruik agterkant instelling"
 
 msgctxt "#30400"
 msgid "Predictive tuning"
